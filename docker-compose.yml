@@ -1,0 +1,13 @@
+version: "3.3"
+services:
+  convert-shp:
+    image: service_to_shp_prod:1.0
+    container_name: service_to_shp_prod
+    build: .
+    environment:
+      PORT: 5000
+    ports:
+      - "5000:5000"
+    restart: on-failure
+
+
