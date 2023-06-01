@@ -60,14 +60,14 @@ def run():
     """ with daemon.DaemonContext():
         app.run(host="0.0.0.0", port=PORT, debug=True) """
     app.debug = True
-    app.run(host="0.0.0.0", port=PORT)
+    app.run(host='0.0.0.0', port=PORT)
     
 if __name__ == '__main__':
     run()
 
 """
 Ejecutar Flask
-python -m  flask run --host=0.0.0.0 --port=5000
+python -m  flask run --host=0.0.0.0 --port=5500
 
 """
 
