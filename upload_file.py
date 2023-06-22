@@ -19,7 +19,7 @@ def upload_file(path_zip: str, filename: str):
             "fileBase64": base64_data,
         }
 
-        return {"success": True, "file_base64": base64_data}
+        return {"success": True, "file_base64": base64_data, "zip_path": path_zip}
 
         # Realizar petición a servicio web externo
         r = requests.post(URL_SERVICE_S3, params=params)
@@ -42,4 +42,5 @@ def upload_file(path_zip: str, filename: str):
             "success": False,
             "file_base64": "",
             "error": "Ocurrió un error al intentar subir archivo en S3.",
+            "zip_path": path_zip
         }
