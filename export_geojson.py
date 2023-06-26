@@ -1,8 +1,9 @@
 import geopandas as gpd
 import requests
 import json
-import base64
-
+import uuid
+import zipfile
+from upload_file import upload_file
 
 def to_geojson(url_service: str, service_name: str, project: str):
     # URL del Feature Service
@@ -59,13 +60,19 @@ def to_geojson(url_service: str, service_name: str, project: str):
         # Guardar el GeoDataFrame como un shapefile
         gdf.to_file(output_geojson, crs=crs, driver='GeoJSON')
 
-        with open(output_geojson, "rb") as file:
-            geojson_data = file.read()
+        # Comprimir el shapefile en un archivo ZIP
+        filename_zip = f"{service_name}_{uuid.uuid4()}.zip"
+        zip_path = output_folder + f"/{filename_zip}"
+        
+        with zipfile.ZipFile(zip_path, "w", zipfile.ZIP_DEFLATED) as zipf:
+            zipf.write(output_geojson, arcname=f"{service_name}.geojson")
 
-        base64_data = base64.b64encode(geojson_data).decode("utf-8")
 
-        return {"success": True, "file_base64": base64_data}
- 
+        print("Archivo ZIP creado en: " + zip_path)
+
+        response_upload = upload_file(zip_path, filename_zip)
+        return response_upload
+    
     except Exception as e:
         print(e)
         return {"success": False, "message": "Proceso terminado con errores"}

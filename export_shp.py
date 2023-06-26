@@ -2,6 +2,7 @@ import geopandas as gpd
 import requests
 import json
 import zipfile
+import uuid
 import os, shutil
 from upload_file import upload_file
 
@@ -66,10 +67,10 @@ def to_shp(url_service: str, service_name: str, project: str):
         gdf.to_file(output_shp, crs=crs, driver='ESRI Shapefile')
 
         # Comprimir el shapefile en un archivo ZIP
-        filename_zip = f"{service_name}.zip"
+        filename_zip = f"{service_name}_{uuid.uuid4()}.zip"
         zip_path = output_folder + f"/{filename_zip}"
 
-        with zipfile.ZipFile(zip_path, "w") as zipf:
+        with zipfile.ZipFile(zip_path, "w", zipfile.ZIP_DEFLATED) as zipf:
             zipf.write(output_shp, arcname=f"{service_name}.shp")
             zipf.write(
                 f"{output_folder}/{service_name}.shx", arcname=f"{service_name}.shx"
