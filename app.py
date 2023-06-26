@@ -2,9 +2,10 @@ from flask import request, Flask, jsonify, make_response
 from configs import PORT, ENV_SERVICE, APP
 from export_shp import to_shp, deleteAllFiles
 from export_geojson import to_geojson
+from flask_cors import CORS
 
 app = Flask(__name__)
-
+cors = CORS(app, resources={r"/*": {"origins": "*"}})
 
 @app.route("/", methods=["GET"])
 def home():
